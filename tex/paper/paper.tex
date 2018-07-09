@@ -1,16 +1,18 @@
 \documentclass{amsart}
 \usepackage{amsaddr}
 \usepackage[style=numeric,backend=biber]{biblatex}
-\addbibresource{paper.bib}
+\addbibresource{../sources.bib}
 
-\input{packages.tex}
-\input{commands.tex}
+\input{../packages.tex}
+\input{../commands.tex}
 
 \numberwithin{equation}{section}
 
+\graphicspath{{figures/}}
+
 \begin{document}
 
-\title{Fast Simulation of Multistage Clonal Expansion Models for Colorectal Cancer}
+\title{Fast Simulation of Multistage Clonal Expansion Models}
 
 %    Remove any unused author tags.
 
@@ -26,7 +28,7 @@
 
 
 \begin{abstract}
-We derive and demonstrate a method to simulate the Colorectal cancer model from \cite{jeon2008evaluation}. The method is faster than previous ones while retaining similar accuracy.
+We derive and demonstrate a method to simulate Multistage Clonal Expansion (MSCE) models. The method is faster than previous ones while retaining similar accuracy.
 \end{abstract}
 
 \maketitle
@@ -53,7 +55,7 @@ Let $N\br{t}$ follow a non-homogeneous Poisson process with rate $\lambda\br{t} 
 \begin{equation}
 \nu\br{t} = \int_0^t\lambda\br{t-\tau} p\br{\tau} \ds = \br{\lambda \ast p}\br{t} \ .
 \end{equation}
-Then for the characteristic functions $\varphi_{N\br{t}}$ and $\varphi_{M\br{t}}$ there holds
+Then, for the characteristic functions $\varphi_{N\br{t}}$ and $\varphi_{M\br{t}}$ there holds
 \begin{equation}
 \max_{t \in \brr{0, \sigma}} \fabs{\varphi_{N\br{t}} - \varphi_{M\br{t}}}
 \leq 2 \br{\fexp{2 m\br{\sigma}} - 2m\br{\sigma} - 1}
@@ -113,7 +115,7 @@ While the mean is consistent, the difference in variance is of second order in $
 
 
 \subsection{Two Stage Poisson Process}
-We will consider a two stage Poisson process. The first process has rate $\nu\br{t}$ and each occurrence of the first process is the starting point of a second-stage process with rate $\lambda\br{t}$. We are interested in the number $N\br{t}$ of occurrences from the first process and the arrival times $u_j$ of the second-stage processes. It is vital that we do not need the arrival times of the first process.
+We will consider a two stage Poisson process. The first process has rate $\nu\br{t}$ and each occurrence of the first process is the starting point of a second-stage process with rate $\lambda\br{t}$. We are interested in the number $N\br{t}$ of occurrences from the first process and the arrival times of the second-stage processes. It is vital that we do not need the arrival times of the first process.
 
 \begin{theorem}\label{thm:twostagepoisson}
 Let $N\br{t}$ be the number of occurrences of a non-homogeneous Poisson process with rate $\nu\br{t}$, mean value function $\eta\br{t}$ starting at time $0$. Let $u_1, \dots, u_{N\br{t}}$ denote the arrival times of this process.
@@ -125,14 +127,14 @@ The process
     Y\br{t} = \sum_{j=1}^{N\br{t}} Y\br{t, u_j}
 \]{}
 is called a filtered Poisson process \cite[chapter 4, eqn. (5.42)]{parzen1962stochastic}.
-For $t \in \brr{0, \sigma}$, if we neglect terms of order $O(m\br{\sigma}^2)$:
+For $t \in \brr{0, \sigma}$, if we neglect terms of order $O(m\br{\sigma}^2)$, there holds:
 
 \begin{enumerate}
 % \item[i)] The process $Y\br{t}$ is a Poisson process with rate
 % \[
 %     \mu\br{t} = \br{\nu \ast \lambda}\br{t} \, .
 % \]
-\item[i)] Conditioned on $N\br{\sigma}$ the arrival times of the process $Y\br{t}$ follow a Poisson process with rate
+\item[i)] Conditioned on $N\br{\sigma}$ the process $Y\br{t}$ follows a Poisson process with rate
 \[
     \mu_{N}\br{t} = \frac{N\br{\sigma}}{\eta\br{\sigma}} \br{\nu \ast \lambda}\br{t} \qquad \forall t \in \brr{0, \sigma} \, .
 \]
@@ -155,7 +157,7 @@ Because the sum of $N\br{\sigma}$ independent Poisson process is again a Poisson
 \]
 The direct solution would be to simulate the first Poisson process fully and obtain arrival times $u_j$. For each arrival time one would simulate a Poisson process with rate $\lambda\br{t-u_j}$. This means on average $\eta\br{\sigma}$ many Poisson process simulations. The method proposed here can, under the circumstances described, generate a very good approximation with only two Poisson process simulations. This advantage comes from marginalizing out (approximately) the arrival times $u_j$.\\
 
-\noindent For the Colorectal cancer model from \cite{jeon2008evaluation} the first rate is of order $10^2$, $\sigma=50$ and the second rate is of order $10^{-6}$. The direct approach results in approximately $5000$ Poisson process simulations. The approximate method yields a theoretic speedup factor of 1000. Also $m\br{\sigma} \approx 10^{-4}$ and thus the approximation extremely accurate.
+\noindent For the Colorectal cancer model from \cite{jeon2008evaluation} the first rate is of order $10^2$, $\sigma=50$ and the second rate is of order $10^{-6}$. The direct approach results in approximately $5000$ Poisson process simulations. The approximate method yields a theoretic speedup factor of 1000. Also $m\br{\sigma} \approx 10^{-4}$ and thus the approximation is extremely accurate.
 \end{remark}
 
 
@@ -203,15 +205,84 @@ In Figure \ref{fig:numPoissProcOne} the model as described in \autoref{thm:itera
         \includegraphics[width=\textwidth]{poissproc01_2_2.eps}
         \caption{$\lambda \equiv 10^{-2}$. Log-Scale.}
     \end{subfigure}
-    \caption{$10^7$ samples. $\sigma = 1$. $\tau \sim \text{unif}\br{0,1}$. For this example there holds $\E{N} = \lambda / 2$ and $Var\br{N} = \lambda/2 + \lambda^2/12$}
+    \caption{$10^7$ samples. $\sigma = 1$. $\tau \sim \text{unif}\br{0,1}$. For this example there holds $\E{N} = \lambda / 2$ and $Var\br{N} = \lambda/2 + \lambda^2/12$. The blue histogram represents the values from the direct simulation with $10^7$ samples, i.e. the "ground truth". The red line is a Poisson distribution with parameter $\E{M} = \lambda / 2$, i.e. the approximation. Because the approximation is just a Poisson process, the distribution of $M$ is Poisson and can be obtained without sampling.}
     \label{fig:numPoissProcOne}
 \end{figure}
 
 
-\subsection{Two Stage Poisson Process}
-\label{sec:numPoissProcTwo}
+\subsection{Two Stage Poisson Process}\label{sec:numPoissProcTwo}
+We consider a two-stage Poisson process with homogeneous rates, i.e. $\nu\br{t} \equiv 10^3$, $\lambda\br{t} \equiv 10^{-3}$. We choose $\sigma = 2$.\\
 
+\noindent Because the two-stage Poisson process is a filtered Poisson process, we can use the formulas from \cite[chapter 4, eqn. (5.43)--(5.45)]{parzen1962stochastic} to analytically calculate the mean and variance of the true process $N$. For the approximation $M$ we use the law of total expectation and obtain
+\begin{align}\label{eqn:numPoissProcTwoEVar}
+\begin{split}
+\E{N\br{\sigma}} &= \frac{\nu \lambda \sigma^2}{2} \,, \\
+Var\br{N\br{\sigma}} &= \frac{\nu \lambda \sigma^2}{2} \br{1 + \frac{2 \sigma \lambda}{3}} \,, \\
+\E{M\br{\sigma}} &= \frac{\nu \lambda \sigma^2}{2} \,,\\
+Var\br{M\br{\sigma}} &= \frac{\nu \lambda \sigma^2}{2} \br{1 + \frac{\sigma \lambda}{2}} \, .
+\end{split}
+\end{align}
+The relative error in variance is thus $\frac{\sigma \lambda}{6} \approx 0.8 \%$. The results for the sampling the real and approximate process with $10^6$ samples are shown in \autoref{tab:numPoissProcTwo} and \autoref{fig:numPoissProcTwo}.\\
 
-\newpage
+\noindent If we would have used a normal Poisson process as approximation, the variance would be exactly the mean and the relative error in Variance would be $\sigma \lambda$, i.e. six times higher. More significant would be that by direct simulation we would not obtain the number of occurrences in the intermediate stage, which is needed for further computation.\\
+
+\noindent The runtime\footnote{This experiment was carried out on one core of a Intel Xeon X5680 at 3.33GHz that was launched in 2010.} is approximately $4.8 \times 10^{-4}$ seconds per sample for the direct method and $1.4 \times 10^{-6}$ seconds per sample for the approximate method. This is a speed up by a factor of ca. 100. It should be noted that for this experiment only the number of occurrences $N$ was computed and not their arrival times, therefore the speedup is probably even more substantial for the real simulation.\\
+
+\noindent From \autoref{eqn:numPoissProcTwoEVar} it can be seen that by simulating the approximation with $\hat{\nu} = \frac{3}{4} \nu$ and $\hat{\lambda} = \frac{4}{3} \lambda$ mean and variance of the approximation will be correct. The numerical experiments (\autoref{tab:numPoissProcTwoChnaged} and \autoref{fig:numPoissProcTwo}) indicate that the effect of this change is small.
+
+\begin{table}
+    \begin{tabular}{ |c|c|r|r| }
+    \hline
+    \textbf{Statistic} & \textbf{Approximation} & \textbf{Type} & \textbf{Value}\\
+    \hline\hline
+    \input{tables/poissproc02.tex}
+    \hline
+    \end{tabular}
+    \caption{Two stage Poisson process with $\nu \equiv 10^3$, $\lambda \equiv 10^{-3}$, $\sigma = 2$ and a total of $10^6$ samples.}
+    \label{tab:numPoissProcTwo}
+\end{table}
+
+\begin{table}
+    \begin{tabular}{ |c|c|r|r| }
+    \hline
+    \textbf{Statistic} & \textbf{Approximation} & \textbf{Type} & \textbf{Value}\\
+    \hline\hline
+    \input{tables/poissproc02_changed.tex}
+    \hline
+    \end{tabular}
+    \caption{Two stage Poisson process with $\nu \equiv 10^3$, $\lambda \equiv 10^{-3}$, $\sigma = 2$ and a total of $10^6$ samples. For the approximate simulation $\hat{\nu} = \frac{3}{4} \nu$ and $\hat{\lambda} = \frac{4}{3} \lambda$ were used. Therefore, the analytic mean and variance are identical for direct and approximate simulation.}
+    \label{tab:numPoissProcTwoChnaged}
+\end{table}
+
+\begin{figure}[ht]
+    \centering
+    \begin{subfigure}[t]{0.475\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{poissproc02_1.eps}
+        \caption{Bar-chart for the number of occurrences.}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.475\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{poissproc02_2.eps}
+        \caption{Bar-chart for the number of occurrences. Log-Scale.}
+    \end{subfigure}
+    \\
+    \begin{subfigure}[t]{0.475\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{poissproc02_changed_1.eps}
+        \caption{Bar-chart for the number of occurrences. $\hat{\nu} = \frac{3}{4} \nu$ and $\hat{\lambda} = \frac{4}{3} \lambda$.}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[t]{0.475\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{poissproc02_changed_2.eps}
+        \caption{Bar-chart for the number of occurrences. $\hat{\nu} = \frac{3}{4} \nu$ and $\hat{\lambda} = \frac{4}{3} \lambda$. Log-Scale.}
+    \end{subfigure}
+    \caption{Two stage Poisson process with $\nu \equiv 10^3$, $\lambda \equiv 10^{-3}$. For the direct simulation $\nu$, $\lambda$ were used. For the approximate simulation $\nu$, $\lambda$ were used in (A) and (B) and $\hat{\nu} = \frac{3}{4} \nu$ and $\hat{\lambda} = \frac{4}{3} \lambda$ were used for (C) and (D). $\sigma = 2$ and a total of $10^6$ samples was used.}
+    \label{fig:numPoissProcTwo}
+\end{figure}
+
+\clearpage
 \printbibliography
 \end{document}
