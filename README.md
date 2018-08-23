@@ -4,15 +4,14 @@ This toolbox implements the paper
 ```
 Jihyoun Jeon et al. “Evaluation of screening strategies for pre-malignant lesions using a biomathematical approach”. In: Mathematical biosciences 213.1 (2008), pp. 56–70.
 ```
-which can be found on [google scholar](http://scholar.google.com/scholar?btnG=Search%2BScholar&as_q=%22Evaluation%2Bof%2Bscreening%2Bstrategies%2Bfor%2Bpre-malignant%2Blesions%2Busing%2Ba%2Bbiomathematical%2Bapproach.%22&as_sauthors=Jeon&as_occt=any&as_epq=&as_oq=&as_eq=&as_publication=&as_ylo=&as_yhi=&as_sdtAAP=1&as_sdtp=1).
+which can be found on [google scholar](http://scholar.google.com/scholar?btnG=Search%2BScholar&as_q=%22Evaluation%2Bof%2Bscreening%2Bstrategies%2Bfor%2Bpre-malignant%2Blesions%2Busing%2Ba%2Bbiomathematical%2Bapproach.%22&as_sauthors=Jeon&as_occt=any&as_epq=&as_oq=&as_eq=&as_publication=&as_ylo=&as_yhi=&as_sdtAAP=1&as_sdtp=1). The file `tex/paper/paper.pdf` explains an approximation used which decreases the computational time by two to three orders of magnitude while retaining comparable accuracy.
 
 ## Overview
 The repo is structured as follows
 + `src`: All code
- + `msce`: Core functions to simulate MSCE models
- + `tests`: Scripts that are used to generate the figures or test functions
+  + `tests`: Scripts that are used to generate the figures or test functions
 + `tex`: All tex related files
- + `paper`: Main file explaining the method
+  + `paper`: Main file explaining the method
 
 
 ## Installation
