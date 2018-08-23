@@ -9,9 +9,7 @@ which can be found on [google scholar](http://scholar.google.com/scholar?btnG=Se
 ## Overview
 The repo is structured as follows
 + `src`: All code
-  + `tests`: Scripts that are used to generate the figures or test functions
 + `tex`: All tex related files
-  + `paper`: Main file explaining the method
 
 
 ## Installation
@@ -21,3 +19,11 @@ The repo is structured as follows
   + **chebfun** is an excellent MATLAB package for Chebyshev polynomial approximation from Oxford's Numerical Analysis Group. It can be obtained from their [website](http://www.chebfun.org/). We recommend installing through git which they call the developer option.
   + **cbrewer** is a MATLAB package that wraps the nice [colorbrewer](https://github.com/altmany/export_fig) colors. It is used for plotting. It can be found on [fileexchange](https://www.mathworks.com/matlabcentral/fileexchange/34087-cbrewer---colorbrewer-schemes-for-matlab).
   + **export_fig** is used for printing figures. The MSCE core should work without it. Find the github repo [here](https://github.com/altmany/export_fig).
+
+## Code Structure
++ `src/tests` contains the MATLAB unit tests which can *and should* be run by running `src/tests/crc_run_all_tests.m`.
++ The prefix `crc` indicates functions specific for the Colorectal Cancer paper.
++ Function Nomenclature:
+  + `crc_survival*.m` are the survival functions for the `*`-stage model. They return the value.
+  + `crc_mksurvival*.m` are the survival functions for the `*`-stage model. They return a chebfun approximation (accurate to nearly machine precision: 1e-15) of the survival function. `crc_mklogsurvival*.m` returns a chebfun for the log of the survival function.`crc_mksurvival*m1.m` returns a chebfun for the survival function minus 1.
+  + The above holds also for the hazard functions.

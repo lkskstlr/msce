@@ -3,7 +3,7 @@ function val = crc_survival2(model, t)
 %
 %   INPUTS:
 %       model: parameters from crc_mkmodel, struct
-%       t: time, can be any array
+%       t: time>=0, can be any array
 %   OUTPUT:
 %       val: value of survival function, same size as t
 %
