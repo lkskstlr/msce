@@ -17,7 +17,7 @@
 %       Uses thinning. If lambda is a scalar, then a faster algorithm
 %       (poissproc_hom) is used.
 %
-% See also poissproc_hom
+% See also poissproc_hom, poissproc2
 %
 % Copyright 2018 Lukas Koestler (TUM)
 
